@@ -22,5 +22,5 @@ public class EmployeeRequestDto {
     private Long jobId;
 
     @NonNull
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 }
