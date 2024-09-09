@@ -1,4 +1,4 @@
-package com.employee.management.infrastructure.repositories;
+package com.employee.management.infrastructure.persistence;
 
 import com.employee.management.domain.models.Payment;
 import com.employee.management.domain.repositories.PaymentRepository;

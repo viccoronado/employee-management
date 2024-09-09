@@ -3,23 +3,27 @@ package com.employee.management.domain.models;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @Builder
 public class Employee {
-    private final Long id;
     @NonNull
-    private final String firstName;
+    private Long id;
+
     @NonNull
-    private final String lastName;
+    private String name;
+
     @NonNull
-    private final LocalDate birthDate;
+    private String lastName;
+
     @NonNull
-    private final Long genderId;
+    private LocalDate birthdate;
+
     @NonNull
-    private final Long jobId;
+    private Long genderId;
+
+    @NonNull
+    private Long jobId;
 }

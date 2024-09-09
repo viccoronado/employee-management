@@ -2,16 +2,25 @@ package com.employee.management.application.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NonNull;
+
 import java.time.LocalDate;
 
-@Builder
 @Getter
-@Setter
+@Builder
 public class EmployeeRequestDto {
-    private String firstName;
+    @NonNull
+    private String name;
+
+    @NonNull
     private String lastName;
-    private LocalDate dateOfBirth;
+
+    @NonNull
     private Long genderId;
+
+    @NonNull
     private Long jobId;
+
+    @NonNull
+    private LocalDate birthdate;
 }

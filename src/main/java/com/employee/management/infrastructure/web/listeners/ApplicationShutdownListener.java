@@ -1,4 +1,4 @@
-package com.employee.management.infrastructure.listeners;
+package com.employee.management.infrastructure.web.listeners;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
