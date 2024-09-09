@@ -46,3 +46,24 @@ public class InvalidPaymentDataException extends RuntimeException {
         super(message);
     }
 }
+
+// Custom exception: Employee already exists
+public class EmployeeAlreadyExistsException extends RuntimeException {
+    public EmployeeAlreadyExistsException(String message) {
+        super(message);
+    }
+}
+
+// Custom exception: Invalid employee age
+public class InvalidEmployeeAgeException extends RuntimeException {
+    public InvalidEmployeeAgeException(String message) {
+        super(message);
+    }
+}
+
+// Custom exception: Gender not found
+public class GenderNotFoundException extends RuntimeException {
+    public GenderNotFoundException(String message) {
+        super(message);
+    }
+}

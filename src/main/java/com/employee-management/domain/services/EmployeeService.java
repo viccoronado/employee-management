@@ -10,15 +10,18 @@ public class EmployeeService {
     private final JobRepository jobRepository;
     private final TimeEntryRepository timeEntryRepository;
     private final PaymentRepository paymentRepository;
+    private final GenderRepository genderRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository, 
+    public EmployeeService(EmployeeRepository employeeRepository,
                            JobRepository jobRepository,
                            TimeEntryRepository timeEntryRepository,
-                           PaymentRepository paymentRepository) {
+                           PaymentRepository paymentRepository,
+                           GenderRepository genderRepository) {
         this.employeeRepository = employeeRepository;
         this.jobRepository = jobRepository;
         this.timeEntryRepository = timeEntryRepository;
         this.paymentRepository = paymentRepository;
+        this.genderRepository = genderRepository;
     }
 
     public List<Employee> getEmployeesByJob(Long jobId) {
@@ -40,14 +43,44 @@ public class EmployeeService {
         return paymentRepository.calculateTotalAmount(employeeId, startDate, endDate);
     }
 
-    private void validateJobExists(Long jobId) {
-        jobRepository.findById(jobId)
-            .orElseThrow(() -> new JobNotFoundException("Job not found for ID: " + jobId));
+    public Employee createEmployee(EmployeeRequestDTO employeeRequestDTO) {
+        validateEmployeeUniqueness(employeeRequestDTO.getName(), employeeRequestDTO.getLastName());
+        validateEmployeeAge(employeeRequestDTO.getBirthDate());
+        validateGenderExists(employeeRequestDTO.getGenderId());
+        validateJobExists(employeeRequestDTO.getJobId());
+
+        Employee employee = new Employee.Builder()
+                .withName(employeeRequestDTO.getName())
+                .withLastName(employeeRequestDTO.getLastName())
+                .withBirthDate(employeeRequestDTO.getBirthDate())
+                .withGenderId(employeeRequestDTO.getGenderId())
+                .withJobId(employeeRequestDTO.getJobId())
+                .build();
+
+        return employeeRepository.save(employee);
     }
 
-    private void validateEmployeeExists(Long employeeId) {
-        if (!employeeRepository.existsById(employeeId)) {
-            throw new EmployeeNotFoundException("Employee not found for ID: " + employeeId);
+    private void validateEmployeeUniqueness(String name, String lastName) {
+        if (employeeRepository.findByNameAndLastName(name, lastName).isPresent()) {
+            throw new EmployeeAlreadyExistsException("An employee with this name and last name already exists.");
+        }
+    }
+
+    private void validateEmployeeAge(LocalDate birthDate) {
+        if (LocalDate.now().getYear() - birthDate.getYear() < 18) {
+            throw new InvalidEmployeeAgeException("Employee must be at least 18 years old.");
+        }
+    }
+
+    private void validateGenderExists(Long genderId) {
+        if (!genderRepository.existsById(genderId)) {
+            throw new GenderNotFoundException("Gender not found for ID: " + genderId);
+        }
+    }
+
+    private void validateJobExists(Long jobId) {
+        if (!jobRepository.existsById(jobId)) {
+            throw new JobNotFoundException("Job not found for ID: " + jobId);
         }
     }
 
