@@ -61,8 +61,6 @@ public class EmployeeController {
         try {
             double totalHours = employeeService.calculateTotalHoursWorked(employeeId, startDate, endDate);
             return ResponseEntity.ok(totalHours);
-        } catch (InvalidEmployeeIdException | InvalidDateRangeException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (EmployeeNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex) {
