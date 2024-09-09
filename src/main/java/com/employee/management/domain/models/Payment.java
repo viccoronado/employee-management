@@ -61,6 +61,10 @@ public class Payment {
         return date;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public static class Builder {
         private Long id;
         private Long employeeId;

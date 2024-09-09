@@ -48,6 +48,9 @@ public class WorkedHours {
         return workedDate;
     }
 
+    public void setId(long l) {
+    }
+
     public static class WorkedHoursBuilder {
         private Long id;
         private Long employeeId;

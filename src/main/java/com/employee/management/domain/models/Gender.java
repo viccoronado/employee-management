@@ -28,6 +28,9 @@ public class Gender {
         return name;
     }
 
+    public void setId(long l) {
+    }
+
     public static class GenderBuilder {
         private Long id;
         private String name;
@@ -38,8 +41,7 @@ public class Gender {
         }
 
         public GenderBuilder withName(String name) {
-            this.name = name;
-            return this;
+            return null;
         }
 
         public Gender build() {

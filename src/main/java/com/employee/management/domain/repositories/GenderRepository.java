@@ -7,6 +7,8 @@ import java.util.Optional;
 
 @Repository
 public interface GenderRepository {
+    Gender save(Gender gender);
+
     Optional<Gender> findById(Long id);
     boolean existsById(Long id);
 }

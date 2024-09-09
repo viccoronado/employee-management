@@ -1,5 +1,6 @@
 package com.employee.management.domain.models;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 public class TimeEntry {
@@ -44,5 +45,9 @@ public class TimeEntry {
 
     public void setWorkedHours(Double workedHours) {
         this.workedHours = workedHours;
+    }
+
+    public Instant getDate() {
+        return null;
     }
 }
