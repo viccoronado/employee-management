@@ -17,7 +17,7 @@ public class EmployeeRequestDto {
         this.jobId = builder.jobId;
     }
 
-    public String getName() {
+    public String getFirstName() {
         return firstName;
     }
 

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Employee {
     private final Long id;
-    private final String name;
+    private final String firstName;
     private final String lastName;
     private final LocalDate birthDate;
     private final Long genderId;
@@ -12,7 +12,7 @@ public class Employee {
 
     private Employee(Builder builder) {
         this.id = builder.id;
-        this.name = builder.name;
+        this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.birthDate = builder.birthDate;
         this.genderId = builder.genderId;
@@ -21,7 +21,7 @@ public class Employee {
 
     // Getters
     public Long getId() { return id; }
-    public String getName() { return name; }
+    public String getName() { return firstName; }
     public String getLastName() { return lastName; }
     public LocalDate getBirthDate() { return birthDate; }
     public Long getGenderId() { return genderId; }
@@ -29,7 +29,7 @@ public class Employee {
 
     public static class Builder {
         private Long id;
-        private String name;
+        private String firstName;
         private String lastName;
         private LocalDate birthDate;
         private Long genderId;
@@ -41,7 +41,7 @@ public class Employee {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.firstName = name;
             return this;
         }
 

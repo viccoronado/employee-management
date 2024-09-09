@@ -46,7 +46,7 @@ public class EmployeeService {
 
     public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) throws InvalidEmployeeDataException, InvalidEmployeeAgeException, GenderNotFoundException, JobNotFoundException, EmployeeAlreadyExistsException {
         Employee employee = new Employee.Builder()
-                .withName(employeeRequestDto.getName())
+                .withName(employeeRequestDto.getFirstName())
                 .withLastName(employeeRequestDto.getLastName())
                 .withBirthDate(employeeRequestDto.getDateOfBirth())
                 .withGenderId(employeeRequestDto.getGenderId())
