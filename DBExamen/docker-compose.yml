@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: employee_management_container
+    environment:
+      MYSQL_ROOT_PASSWORD: 154043550Vi!
+      MYSQL_DATABASE: EMPLOYEE_MANAGEMENT
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
