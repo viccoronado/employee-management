@@ -2,10 +2,11 @@ package com.employee.management.application.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 
-@Builder
 @Getter
-public class EmployeeResponseDto {
-    private final Long id;
-    private final boolean success;
+@Builder
+public class JobIdRequestDto {
+    @NonNull
+    private Long jobId;
 }
