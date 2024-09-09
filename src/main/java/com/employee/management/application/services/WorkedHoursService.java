@@ -6,7 +6,6 @@ import com.employee.management.domain.exceptions.DuplicateWorkedHoursException;
 import com.employee.management.domain.models.WorkedHours;
 import com.employee.management.domain.repositories.WorkedHoursRepository;
 import com.employee.management.domain.validators.Validator;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +13,19 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class WorkedHoursService {
 
     private static final int MAX_WORKED_HOURS = 20;
-    private final WorkedHoursRepository workedHoursRepository;
 
-    private final @Qualifier("employeeExistsValidator") Validator<Long> employeeExistsValidator;
+    private final WorkedHoursRepository workedHoursRepository;
+    private final Validator<Long> employeeExistsValidator;
+
+    public WorkedHoursService(
+            WorkedHoursRepository workedHoursRepository,
+            @Qualifier("employeeExistsValidator") Validator<Long> employeeExistsValidator) {
+        this.workedHoursRepository = workedHoursRepository;
+        this.employeeExistsValidator = employeeExistsValidator;
+    }
 
     public WorkedHours addWorkedHours(WorkedHoursRequestDto requestDto) {
         validateWorkedHours(requestDto);

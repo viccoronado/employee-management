@@ -1,16 +1,18 @@
 package com.employee.management.domain.models;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class WorkedHours {
     private UUID id;
     private Long employeeId;
-    private int workedHours;
+    private Integer workedHours;
     private LocalDate workedDate;
 }

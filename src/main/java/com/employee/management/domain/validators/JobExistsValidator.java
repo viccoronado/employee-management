@@ -5,16 +5,16 @@ import com.employee.management.domain.repositories.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component("jobExistsValidator")
+@Component
 @RequiredArgsConstructor
-public class JobExistsValidator implements Validator<Long> {
+public class JobExistsValidator {
 
     private final JobRepository jobRepository;
 
-    @Override
     public void validate(Long jobId) {
         if (!jobRepository.existsById(jobId)) {
             throw new JobNotFoundException("Job not found.");
         }
     }
 }
+

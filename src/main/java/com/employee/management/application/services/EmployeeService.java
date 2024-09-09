@@ -32,10 +32,9 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     public Employee addEmployee(EmployeeRequestDto requestDto) {
+        jobExistsValidator.validate(requestDto.getJobId());
         validateEmployeeData(requestDto);
-
         Employee newEmployee = employeeMapper.toEntity(requestDto);
-
         return employeeRepository.save(newEmployee);
     }
 
