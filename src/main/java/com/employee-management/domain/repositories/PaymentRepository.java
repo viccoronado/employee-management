@@ -1,3 +1,6 @@
+package com.example.domain.repositories;
+
+import com.example.domain.models.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,5 +1,8 @@
+package com.example.domain.models;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Payment {
@@ -17,6 +20,20 @@ public class Payment {
         this.employeeId = builder.employeeId;
         this.amount = builder.amount;
         this.date = builder.date;
+
+        validate();
+    }
+
+    private void validate() {
+        if (Objects.isNull(employeeId)) {
+            throw new IllegalArgumentException("Employee ID cannot be null.");
+        }
+        if (Objects.isNull(amount) || amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero.");
+        }
+        if (Objects.isNull(date)) {
+            throw new IllegalArgumentException("Date cannot be null.");
+        }
     }
 
     // Getters

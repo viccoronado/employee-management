@@ -2,6 +2,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.employee.management.domain.dto.TimeEntryRequestDto;
+import com.employee.management.domain.dto.TimeEntryResponseDto;
+import com.employee.management.domain.model.TimeEntry;
+
+import com.employee.management.domain.exceptions.EmployeeNotFoundException;
+import com.employee.management.domain.exceptions.InvalidWorkedHoursException;
+import com.employee.management.domain.exceptions.InvalidDateException;
+import com.employee.management.domain.exceptions.DuplicateTimeEntryException;
+
 @RestController
 @RequestMapping("/time-entries")
 public class TimeEntryController {

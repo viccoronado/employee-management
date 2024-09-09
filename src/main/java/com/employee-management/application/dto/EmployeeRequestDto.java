@@ -3,49 +3,74 @@ package com.example.application.dto;
 import java.time.LocalDate;
 
 public class EmployeeRequestDto {
-    private String firstName;
-    private String lastName;
-    private LocalDate dateOfBirth;
-    private String gender;
-    private Long jobId;
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate dateOfBirth;
+    private final String gender;
+    private final Long jobId;
+
+    private EmployeeRequestDto(Builder builder) {
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.gender = builder.gender;
+        this.jobId = builder.jobId;
+    }
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public Long getJobId() {
         return jobId;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public static class Builder {
+        private String firstName;
+        private String lastName;
+        private LocalDate dateOfBirth;
+        private String gender;
+        private Long jobId;
+
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder dateOfBirth(LocalDate dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public Builder gender(String gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public Builder jobId(Long jobId) {
+            this.jobId = jobId;
+            return this;
+        }
+
+        public EmployeeRequestDto build() {
+            return new EmployeeRequestDto(this);
+        }
     }
 }

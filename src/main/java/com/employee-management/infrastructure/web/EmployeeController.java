@@ -6,6 +6,25 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+// Imports para excepciones personalizadas
+import com.employee.management.domain.exceptions.InvalidEmployeeDataException;
+import com.employee.management.domain.exceptions.InvalidEmployeeAgeException;
+import com.employee.management.domain.exceptions.GenderNotFoundException;
+import com.employee.management.domain.exceptions.JobNotFoundException;
+import com.employee.management.domain.exceptions.EmployeeAlreadyExistsException;
+import com.employee.management.domain.exceptions.InvalidJobIdException;
+import com.employee.management.domain.exceptions.EmployeesNotFoundException;
+import com.employee.management.domain.exceptions.InvalidEmployeeIdException;
+import com.employee.management.domain.exceptions.InvalidDateRangeException;
+import com.employee.management.domain.exceptions.InvalidRequestBodyException;
+
+// DTOs
+import com.employee.management.domain.dto.EmployeeRequestDto;
+import com.employee.management.domain.dto.EmployeeResponseDto;
+
+// Modelos
+import com.employee.management.domain.model.Employee;
+
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -51,12 +70,12 @@ public class EmployeeController {
             List<Employee> employees = employeeService.getEmployeesByJob(jobId);
 
             if (employees.isEmpty()) {
-                throw new EmployeesNotFoundException("No employees found for the given job ID.");
+                throw new EmployeeNotFoundException("No employees found for the given job ID.");
             }
 
             return ResponseEntity.ok(employees);
 
-        } catch (InvalidJobIdException | EmployeesNotFoundException ex) {
+        } catch (InvalidJobIdException | EmployeeNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
 
         } catch (JobNotFoundException ex) {

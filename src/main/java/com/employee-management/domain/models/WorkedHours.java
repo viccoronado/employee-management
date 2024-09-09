@@ -1,7 +1,10 @@
+package com.example.domain.models;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class WorkedHours {
+
     private Long id;
     private Long employeeId;
     private int workedHours;
@@ -16,7 +19,6 @@ public class WorkedHours {
         validate();
     }
 
-    // Validate WorkedHours fields
     private void validate() {
         if (Objects.isNull(employeeId)) {
             throw new IllegalArgumentException("Employee ID cannot be null.");
@@ -30,12 +32,22 @@ public class WorkedHours {
     }
 
     // Getters
-    public Long getId() { return id; }
-    public Long getEmployeeId() { return employeeId; }
-    public int getWorkedHours() { return workedHours; }
-    public LocalDate getWorkedDate() { return workedDate; }
+    public Long getId() {
+        return id;
+    }
 
-    // WorkedHours Builder
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public int getWorkedHours() {
+        return workedHours;
+    }
+
+    public LocalDate getWorkedDate() {
+        return workedDate;
+    }
+
     public static class WorkedHoursBuilder {
         private Long id;
         private Long employeeId;

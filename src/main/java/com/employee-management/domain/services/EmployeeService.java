@@ -1,4 +1,11 @@
 import org.springframework.stereotype.Service;
+import com.employee.management.domain.exceptions.EmployeeAlreadyExistsException;
+import com.employee.management.domain.exceptions.InvalidEmployeeAgeException;
+import com.employee.management.domain.exceptions.GenderNotFoundException;
+import com.employee.management.domain.exceptions.JobNotFoundException;
+import com.employee.management.domain.exceptions.EmployeeNotFoundException;
+import com.employee.management.domain.exceptions.InvalidDateRangeException;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,14 +39,12 @@ public class EmployeeService {
     public double calculateTotalHoursWorked(Long employeeId, LocalDate startDate, LocalDate endDate) {
         validateEmployeeExists(employeeId);
         validateDates(startDate, endDate);
-
         return timeEntryRepository.calculateTotalHours(employeeId, startDate, endDate);
     }
 
     public double calculateTotalAmountPaid(Long employeeId, LocalDate startDate, LocalDate endDate) {
         validateEmployeeExists(employeeId);
         validateDates(startDate, endDate);
-
         return paymentRepository.calculateTotalAmount(employeeId, startDate, endDate);
     }
 
@@ -49,7 +54,7 @@ public class EmployeeService {
         validateGenderExists(employeeRequestDTO.getGenderId());
         validateJobExists(employeeRequestDTO.getJobId());
 
-        Employee employee = new Employee.Builder()
+        Employee employee = new Employee.EmployeeBuilder()
                 .withName(employeeRequestDTO.getName())
                 .withLastName(employeeRequestDTO.getLastName())
                 .withBirthDate(employeeRequestDTO.getBirthDate())
@@ -81,6 +86,12 @@ public class EmployeeService {
     private void validateJobExists(Long jobId) {
         if (!jobRepository.existsById(jobId)) {
             throw new JobNotFoundException("Job not found for ID: " + jobId);
+        }
+    }
+
+    private void validateEmployeeExists(Long employeeId) {
+        if (!employeeRepository.findById(employeeId).isPresent()) {
+            throw new EmployeeNotFoundException("Employee not found for ID: " + employeeId);
         }
     }
 

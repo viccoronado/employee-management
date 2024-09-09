@@ -1,22 +1,19 @@
 package com.example.application.dto;
 
 public class EmployeeResponseDto {
-    private Long id;
-    private boolean success;
+    private final Long id;
+    private final boolean success;
+
+    public EmployeeResponseDto(Long id, boolean success) {
+        this.id = id;
+        this.success = success;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public boolean isSuccess() {
         return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
     }
 }

@@ -1,13 +1,15 @@
+package com.example.domain.models;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Employee {
-    private Long id;
-    private Long genderId;
-    private Long jobId;
-    private String name;
-    private String lastName;
-    private LocalDate birthDate;
+    private final Long id;
+    private final Long genderId;
+    private final Long jobId;
+    private final String name;
+    private final String lastName;
+    private final LocalDate birthDate;
 
     private Employee(EmployeeBuilder builder) {
         this.id = builder.id;
@@ -20,7 +22,6 @@ public class Employee {
         validate();
     }
 
-    // Validate Employee fields
     private void validate() {
         if (Objects.isNull(name) || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty.");
@@ -47,7 +48,6 @@ public class Employee {
     public String getLastName() { return lastName; }
     public LocalDate getBirthDate() { return birthDate; }
 
-    // Employee Builder
     public static class EmployeeBuilder {
         private Long id;
         private Long genderId;

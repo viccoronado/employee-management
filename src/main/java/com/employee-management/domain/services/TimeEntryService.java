@@ -1,5 +1,9 @@
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.employee.management.domain.exceptions.EmployeeNotFoundException;
+import com.employee.management.domain.exceptions.InvalidWorkedHoursException;
+import com.employee.management.domain.exceptions.InvalidDateException;
+import com.employee.management.domain.exceptions.DuplicateTimeEntryException;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -39,7 +43,7 @@ public class TimeEntryService {
 
     private void validateWorkedHours(Double workedHours) {
         if (workedHours <= 0 || workedHours > 20) {
-            throw new InvalidWorkedHoursException("Worked hours must be between 0 and 20.");
+            throw new InvalidWorkedHoursException("Worked hours must be between 1 and 20.");
         }
     }
 
