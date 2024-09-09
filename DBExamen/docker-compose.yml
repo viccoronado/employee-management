@@ -1,4 +1,4 @@
-version: '3.8'  # or any other compatible version
+version: '3.8'
 
 services:
   db:
