@@ -1,4 +1,4 @@
-package com.employee.management.infrastructure.web;
+package com.employee.management.infrastructure.web.controller;
 
 import com.employee.management.application.dto.TimeEntryRequestDto;
 import com.employee.management.application.dto.TimeEntryResponseDto;
