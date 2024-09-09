@@ -16,6 +16,31 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @PostMapping
+    public ResponseEntity<EmployeeResponseDto> createEmployee(@RequestBody EmployeeRequestDto employeeRequestDto) {
+        try {
+            if (employeeRequestDto == null) {
+                throw new InvalidRequestBodyException("Request body must not be null.");
+            }
+
+            if (employeeRequestDto.getFirstName() == null || employeeRequestDto.getLastName() == null ||
+                employeeRequestDto.getDateOfBirth() == null || employeeRequestDto.getGender() == null ||
+                employeeRequestDto.getJobId() == null) {
+                throw new InvalidEmployeeDataException("All employee fields must be provided.");
+            }
+
+            EmployeeResponseDto responseDto = employeeService.createEmployee(employeeRequestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+
+        } catch (InvalidEmployeeDataException | InvalidEmployeeAgeException |
+                 GenderNotFoundException | JobNotFoundException | EmployeeAlreadyExistsException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new EmployeeResponseDto(null, false));
+
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new EmployeeResponseDto(null, false));
+        }
+    }
+
     @GetMapping("/by-job")
     public ResponseEntity<List<Employee>> getEmployeesByJob(@RequestParam Long jobId) {
         try {
@@ -64,31 +89,6 @@ public class EmployeeController {
 
         } catch (EmployeeNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<?> createEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
-        try {
-            if (employeeRequestDTO == null) {
-                throw new InvalidRequestBodyException("Request body must not be null.");
-            }
-
-            if (employeeRequestDTO.getName() == null || employeeRequestDTO.getLastName() == null ||
-                employeeRequestDTO.getBirthDate() == null || employeeRequestDTO.getGenderId() == null ||
-                employeeRequestDTO.getJobId() == null) {
-                throw new InvalidEmployeeDataException("All employee fields must be provided.");
-            }
-
-            Employee createdEmployee = employeeService.createEmployee(employeeRequestDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
-
-        } catch (InvalidEmployeeDataException | InvalidEmployeeAgeException |
-                 GenderNotFoundException | JobNotFoundException | EmployeeAlreadyExistsException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
