@@ -5,34 +5,30 @@ import com.employee.management.domain.repositories.WorkedHoursRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Repository
-public class InMemoryWorkedHoursRepository implements WorkedHoursRepository {
-    private final List<WorkedHours> workedHoursList = new ArrayList<>();
+public class WorkedHoursRepositoryImpl implements WorkedHoursRepository {
 
-    @Override
-    public List<WorkedHours> findByEmployeeIdAndWorkedDateBetween(Long employeeId, LocalDate startDate, LocalDate endDate) {
-        return workedHoursList.stream()
-                .filter(wh -> wh.getEmployeeId().equals(employeeId) && !wh.getWorkedDate().isBefore(startDate) && !wh.getWorkedDate().isAfter(endDate))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<WorkedHours> findById(Long id) {
-        return Optional.empty();
-    }
+    private Map<UUID, WorkedHours> workedHoursDatabase = new HashMap<>();
+    private final Map<Long, Boolean> employeeDatabase = new HashMap<>();
 
     @Override
     public WorkedHours save(WorkedHours workedHours) {
-        workedHoursList.add(workedHours);
+        workedHoursDatabase.put(workedHours.getId(), workedHours);
         return workedHours;
     }
 
-    public void addWorkedHours(WorkedHours workedHours) {
-        workedHoursList.add(workedHours);
+    @Override
+    public boolean employeeExists(Long employeeId) {
+        return employeeDatabase.containsKey(employeeId);
+    }
+
+    @Override
+    public boolean existsByEmployeeAndDate(Long employeeId, LocalDate date) {
+        return workedHoursDatabase.values().stream()
+                .anyMatch(wh -> wh.getEmployeeId().equals(employeeId) && wh.getWorkedDate().equals(date));
     }
 }

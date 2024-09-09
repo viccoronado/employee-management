@@ -1,4 +1,4 @@
-package com.employee.management.application.dto;
+package com.employee.management.application.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

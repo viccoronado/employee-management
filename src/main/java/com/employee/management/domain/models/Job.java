@@ -4,14 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.math.BigDecimal;
-
 @Getter
 @Builder
 public class Job {
-    private final Long id;
     @NonNull
-    private final String name;
+    private Long id;
+
     @NonNull
-    private final BigDecimal salary;
+    private String name;
+
+    @NonNull
+    private Double salary;
 }

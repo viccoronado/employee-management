@@ -1,31 +1,39 @@
-package com.employee.management.application.dto;
+package com.employee.management.application.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeResponseDto {
     private Long id;
     private String name;
     private String lastName;
-    private LocalDate birthdate;
-    private JobDto job;
-    private GenderDto gender;
+    private LocalDate birthDate;
+    private JobDto jobDto;
+    private GenderDto genderDto;
 
-    @Getter
+    @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class JobDto {
         private Long id;
-        private String name;
-        private Double salary;
+        private String title;
     }
 
-    @Getter
+    @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GenderDto {
         private Long id;
-        private String name;
+        private String type;
     }
 }

@@ -1,4 +1,4 @@
-package com.employee.management.application.dto;
+package com.employee.management.application.dto.response;
 
 public class WorkedHoursResponseDto {
 }
