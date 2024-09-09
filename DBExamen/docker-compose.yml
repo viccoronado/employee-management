@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mysql-container
+    container_name: employee-management-container
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: EMPLOYEE_MANAGEMENT
