@@ -19,3 +19,11 @@ Si necesitas detener los contenedores, utiliza
 docker-compose down. 
 ```
 Los contenedores están configurados para ser accesibles en puertos específicos, y los scripts SQL se ejecutan automáticamente cuando el contenedor de MySQL se inicia, asegurando que la base de datos esté lista para usarse con los datos iniciales predefinidos.
+
+### Pruebas unitarias
+Realizadas con Mockito:
+```bash
+mvn test
+```
+
+Desde ya, si estás leyendo esto muchas gracias por tu tiempo y todas las sugerencias de mejoras son más que bienvenidas. ¡Gracias por la oportunidad de mostrar un poco de lo que sé hacer! 🌈
