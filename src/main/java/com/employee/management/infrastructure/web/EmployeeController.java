@@ -37,6 +37,11 @@ public class EmployeeController {
             }
 
             EmployeeResponseDto responseDto = employeeService.createEmployee(employeeRequestDto);
+
+            if (responseDto.getId() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new EmployeeResponseDto(null, false));
+            }
+
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 
         } catch (InvalidEmployeeDataException | InvalidEmployeeAgeException |
