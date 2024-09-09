@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryEmployeeRepository implements EmployeeRepository {
@@ -33,12 +34,14 @@ public class InMemoryEmployeeRepository implements EmployeeRepository {
 
     @Override
     public boolean existsById(Long id) {
-        return false;
+        return employeeStorage.containsKey(id);
     }
 
     @Override
     public List<Employee> findByJobId(Long jobId) {
-        return List.of();
+        return employeeStorage.values().stream()
+                .filter(emp -> emp.getJobId().equals(jobId))
+                .collect(Collectors.toList());
     }
 
     @Override

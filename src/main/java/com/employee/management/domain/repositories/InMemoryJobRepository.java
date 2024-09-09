@@ -20,5 +20,4 @@ public class InMemoryJobRepository implements JobRepository {
     public boolean existsById(Long id) {
         return jobs.containsKey(id);
     }
-
 }

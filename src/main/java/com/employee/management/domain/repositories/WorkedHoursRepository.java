@@ -10,8 +10,6 @@ import java.util.Optional;
 @Repository
 public interface WorkedHoursRepository {
     WorkedHours save(WorkedHours workedHours);
-
-    Optional<WorkedHours> findById(Long id);
-
     List<WorkedHours> findByEmployeeIdAndWorkedDateBetween(Long employeeId, LocalDate startDate, LocalDate endDate);
+    Optional<WorkedHours> findById(Long id);
 }

@@ -28,12 +28,18 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
 
     @Override
     public Optional<TimeEntry> findByEmployeeIdAndWorkedDate(Long employeeId, LocalDate workedDate) {
-        return Optional.empty();
+        return timeEntryStore.values().stream()
+                .filter(te -> te.getEmployeeId().equals(employeeId) && te.getWorkedDate().equals(workedDate))
+                .findFirst();
     }
 
     @Override
     public double calculateTotalHours(Long employeeId, LocalDate startDate, LocalDate endDate) {
-        return 0;
+        return timeEntryStore.values().stream()
+                .filter(te -> te.getEmployeeId().equals(employeeId))
+                .filter(te -> !te.getWorkedDate().isBefore(startDate) && !te.getWorkedDate().isAfter(endDate))
+                .mapToDouble(TimeEntry::getWorkedHours)
+                .sum();
     }
 
     @Override
