@@ -39,3 +39,10 @@ public class EmployeeNotFoundException extends RuntimeException {
         super(message);
     }
 }
+
+// Custom exception: Invalid payment data
+public class InvalidPaymentDataException extends RuntimeException {
+    public InvalidPaymentDataException(String message) {
+        super(message);
+    }
+}

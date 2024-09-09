@@ -9,13 +9,16 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final JobRepository jobRepository;
     private final TimeEntryRepository timeEntryRepository;
+    private final PaymentRepository paymentRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository, 
                            JobRepository jobRepository,
-                           TimeEntryRepository timeEntryRepository) {
+                           TimeEntryRepository timeEntryRepository,
+                           PaymentRepository paymentRepository) {
         this.employeeRepository = employeeRepository;
         this.jobRepository = jobRepository;
         this.timeEntryRepository = timeEntryRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public List<Employee> getEmployeesByJob(Long jobId) {
@@ -28,6 +31,13 @@ public class EmployeeService {
         validateDates(startDate, endDate);
 
         return timeEntryRepository.calculateTotalHours(employeeId, startDate, endDate);
+    }
+
+    public double calculateTotalAmountPaid(Long employeeId, LocalDate startDate, LocalDate endDate) {
+        validateEmployeeExists(employeeId);
+        validateDates(startDate, endDate);
+
+        return paymentRepository.calculateTotalAmount(employeeId, startDate, endDate);
     }
 
     private void validateJobExists(Long jobId) {
