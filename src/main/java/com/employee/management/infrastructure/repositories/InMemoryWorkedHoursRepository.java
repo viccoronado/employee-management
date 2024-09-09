@@ -1,6 +1,7 @@
-package com.employee.management.domain.repositories;
+package com.employee.management.infrastructure.repositories;
 
 import com.employee.management.domain.models.WorkedHours;
+import com.employee.management.domain.repositories.WorkedHoursRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
