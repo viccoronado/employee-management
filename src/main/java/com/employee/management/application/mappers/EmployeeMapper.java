@@ -4,7 +4,6 @@ import com.employee.management.application.dto.request.EmployeeRequestDto;
 import com.employee.management.application.dto.response.EmployeeResponseDto;
 import com.employee.management.domain.models.Employee;
 import org.mapstruct.Mapper;
-
 import java.util.List;
 
 @Mapper(componentModel = "spring")
