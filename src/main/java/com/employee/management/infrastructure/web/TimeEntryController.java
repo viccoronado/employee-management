@@ -2,10 +2,7 @@ package com.employee.management.infrastructure.web;
 
 import com.employee.management.application.dto.TimeEntryRequestDto;
 import com.employee.management.application.dto.TimeEntryResponseDto;
-import com.employee.management.domain.exceptions.DuplicateTimeEntryException;
-import com.employee.management.domain.exceptions.EmployeeNotFoundException;
-import com.employee.management.domain.exceptions.InvalidDateException;
-import com.employee.management.domain.exceptions.InvalidWorkedHoursException;
+import com.employee.management.domain.exceptions.*;
 import com.employee.management.domain.services.TimeEntryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +22,11 @@ public class TimeEntryController {
     }
 
     @PostMapping
-    public ResponseEntity<TimeEntryResponseDto> addWorkedHours(@RequestBody TimeEntryRequestDto timeEntryRequestDto) {
+    public ResponseEntity<TimeEntryResponseDto> createTimeEntry(@RequestBody TimeEntryRequestDto timeEntryRequestDto) {
         try {
-            TimeEntryResponseDto responseDto = timeEntryService.addWorkedHours(timeEntryRequestDto);
+            TimeEntryResponseDto responseDto = timeEntryService.createTimeEntry(timeEntryRequestDto);
             return ResponseEntity.ok(responseDto);
-        } catch (EmployeeNotFoundException | InvalidWorkedHoursException | InvalidDateException | DuplicateTimeEntryException ex) {
+        } catch (EmployeeNotFoundException | InvalidWorkedHoursException | InvalidDateException | TimeEntryAlreadyExistsException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new TimeEntryResponseDto(null, false));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new TimeEntryResponseDto(null, false));

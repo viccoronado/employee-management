@@ -30,7 +30,7 @@ public class EmployeeController {
                 throw new InvalidRequestBodyException("Request body must not be null.");
             }
 
-            if (employeeRequestDto.getFirstName() == null || employeeRequestDto.getLastName() == null ||
+            if (employeeRequestDto.getName() == null || employeeRequestDto.getLastName() == null ||
                     employeeRequestDto.getDateOfBirth() == null || employeeRequestDto.getGenderId() == null ||
                     employeeRequestDto.getJobId() == null) {
                 throw new InvalidEmployeeDataException("All employee fields must be provided.");

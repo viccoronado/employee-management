@@ -4,42 +4,38 @@ import com.employee.management.application.dto.EmployeeRequestDto;
 import com.employee.management.application.dto.EmployeeResponseDto;
 import com.employee.management.domain.exceptions.*;
 import com.employee.management.domain.models.Employee;
+import com.employee.management.domain.models.WorkedHours;
 import com.employee.management.domain.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final JobRepository jobRepository;
-    private final TimeEntryRepository timeEntryRepository;
     private final PaymentRepository paymentRepository;
     private final GenderRepository genderRepository;
+    private final WorkedHoursRepository workedHoursRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository,
                            JobRepository jobRepository,
-                           TimeEntryRepository timeEntryRepository,
                            PaymentRepository paymentRepository,
-                           GenderRepository genderRepository) {
+                           GenderRepository genderRepository,
+                           WorkedHoursRepository workedHoursRepository) {
         this.employeeRepository = employeeRepository;
         this.jobRepository = jobRepository;
-        this.timeEntryRepository = timeEntryRepository;
         this.paymentRepository = paymentRepository;
         this.genderRepository = genderRepository;
+        this.workedHoursRepository = workedHoursRepository;
     }
 
     public List<Employee> getEmployeesByJob(Long jobId) {
         validateJobExists(jobId);
         return employeeRepository.findByJobId(jobId);
-    }
-
-    public double calculateTotalHoursWorked(Long employeeId, LocalDate startDate, LocalDate endDate) {
-        validateEmployeeExists(employeeId);
-        validateDates(startDate, endDate);
-        return timeEntryRepository.calculateTotalHours(employeeId, startDate, endDate);
     }
 
     public double calculateTotalAmountPaid(Long employeeId, LocalDate startDate, LocalDate endDate) {
@@ -49,8 +45,8 @@ public class EmployeeService {
     }
 
     public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) throws InvalidEmployeeDataException, InvalidEmployeeAgeException, GenderNotFoundException, JobNotFoundException, EmployeeAlreadyExistsException {
-        Employee employee = new Employee.EmployeeBuilder()
-                .withName(employeeRequestDto.getFirstName())
+        Employee employee = new Employee.Builder()
+                .withName(employeeRequestDto.getName())
                 .withLastName(employeeRequestDto.getLastName())
                 .withBirthDate(employeeRequestDto.getDateOfBirth())
                 .withGenderId(employeeRequestDto.getGenderId())
@@ -61,7 +57,6 @@ public class EmployeeService {
 
         return new EmployeeResponseDto(savedEmployee.getId(), true);
     }
-
 
     private void validateEmployeeUniqueness(String name, String lastName) {
         if (employeeRepository.findByNameAndLastName(name, lastName).isPresent()) {
@@ -88,7 +83,7 @@ public class EmployeeService {
     }
 
     private void validateEmployeeExists(Long employeeId) {
-        if (!employeeRepository.findById(employeeId).isPresent()) {
+        if (employeeRepository.findById(employeeId).isEmpty()) {
             throw new EmployeeNotFoundException("Employee not found for ID: " + employeeId);
         }
     }
@@ -97,5 +92,25 @@ public class EmployeeService {
         if (startDate.isAfter(endDate)) {
             throw new InvalidDateRangeException("Start date must be before end date.");
         }
+    }
+
+    public double calculateTotalHoursWorked(Long employeeId, LocalDate startDate, LocalDate endDate)
+            throws EmployeeNotFoundException, InvalidDateRangeException {
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidDateRangeException("Start date must be before end date.");
+        }
+
+        Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
+        if (employeeOptional.isEmpty()) {
+            throw new EmployeeNotFoundException("Employee not found.");
+        }
+
+        List<WorkedHours> workedHoursList = workedHoursRepository.findByEmployeeIdAndWorkedDateBetween(employeeId, startDate, endDate);
+
+        double totalHours = workedHoursList.stream()
+                .mapToInt(WorkedHours::getWorkedHours)
+                .sum();
+
+        return totalHours;
     }
 }

@@ -1,46 +1,34 @@
 package com.employee.management.domain.services;
 
-import com.employee.management.domain.exceptions.DuplicateTimeEntryException;
-import com.employee.management.domain.exceptions.EmployeeNotFoundException;
-import com.employee.management.domain.exceptions.InvalidDateException;
-import com.employee.management.domain.exceptions.InvalidWorkedHoursException;
-import com.employee.management.domain.models.TimeEntry;
 import com.employee.management.application.dto.TimeEntryRequestDto;
 import com.employee.management.application.dto.TimeEntryResponseDto;
-import com.employee.management.domain.repositories.EmployeeRepository;
-import com.employee.management.domain.repositories.TimeEntryRepository;
+import com.employee.management.domain.exceptions.*;
+import com.employee.management.domain.models.TimeEntry;
+import com.employee.management.domain.repositories.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class TimeEntryService {
 
-    private final EmployeeRepository employeeRepository;
     private final TimeEntryRepository timeEntryRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public TimeEntryService(EmployeeRepository employeeRepository, TimeEntryRepository timeEntryRepository) {
-        this.employeeRepository = employeeRepository;
+    public TimeEntryService(TimeEntryRepository timeEntryRepository,
+                            EmployeeRepository employeeRepository) {
         this.timeEntryRepository = timeEntryRepository;
+        this.employeeRepository = employeeRepository;
     }
 
-    @Transactional
-    public TimeEntryResponseDto addWorkedHours(TimeEntryRequestDto request) {
-        validateEmployeeExists(request.getEmployeeId());
-        validateWorkedHours(request.getWorkedHours());
-        validateDate(request.getWorkedDate());
-        validateNoDuplicateEntry(request.getEmployeeId(), request.getWorkedDate());
+    public TimeEntryResponseDto createTimeEntry(TimeEntryRequestDto timeEntryRequestDto) throws EmployeeNotFoundException, TimeEntryAlreadyExistsException {
+        validateEmployeeExists(timeEntryRequestDto.getEmployeeId());
+        validateTimeEntryUniqueness(timeEntryRequestDto.getEmployeeId(), timeEntryRequestDto.getWorkedDate());
 
-        TimeEntry timeEntry = new TimeEntry();
-        timeEntry.setEmployeeId(request.getEmployeeId());
-        timeEntry.setWorkedHours(request.getWorkedHours());
-        timeEntry.setWorkedDate(request.getWorkedDate());
+        TimeEntry timeEntry = new TimeEntry(timeEntryRequestDto.getEmployeeId(), timeEntryRequestDto.getWorkedDate(), timeEntryRequestDto.getWorkedHours());
+        TimeEntry savedTimeEntry = timeEntryRepository.save(timeEntry);
 
-        TimeEntry savedEntry = timeEntryRepository.save(timeEntry);
-        return new TimeEntryResponseDto(savedEntry.getId(), true);
+        return new TimeEntryResponseDto(savedTimeEntry.getId(), true);
     }
 
     private void validateEmployeeExists(Long employeeId) {
@@ -49,22 +37,9 @@ public class TimeEntryService {
         }
     }
 
-    private void validateWorkedHours(Double workedHours) {
-        if (workedHours <= 0 || workedHours > 20) {
-            throw new InvalidWorkedHoursException("Worked hours must be between 1 and 20.");
-        }
-    }
-
-    private void validateDate(LocalDate workedDate) {
-        if (workedDate.isAfter(LocalDate.now())) {
-            throw new InvalidDateException("Worked date cannot be in the future.");
-        }
-    }
-
-    private void validateNoDuplicateEntry(Long employeeId, LocalDate workedDate) {
-        Optional<TimeEntry> existingEntry = timeEntryRepository.findByEmployeeIdAndWorkedDate(employeeId, workedDate);
-        if (existingEntry.isPresent()) {
-            throw new DuplicateTimeEntryException("An entry for this employee on this date already exists.");
+    private void validateTimeEntryUniqueness(Long employeeId, LocalDate workedDate) {
+        if (timeEntryRepository.findByEmployeeIdAndWorkedDate(employeeId, workedDate).isPresent()) {
+            throw new TimeEntryAlreadyExistsException("Time entry already exists for this employee on the given date.");
         }
     }
 }
